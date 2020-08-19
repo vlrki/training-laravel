@@ -2,6 +2,10 @@
 
 .env - aфайл локальных настроек
 
+# Функции
+
+dd($var) - Дамп переменной
+
 # Плагины
 
 - https://github.com/barryvdh/laravel-ide-helper
@@ -39,4 +43,35 @@ php artisan migrate:refresh --seed
 
 ```
 php artisan make:factory BlogPostFactory
+```
+
+
+# Контроллеры
+
+## Создание REST контроллера
+
+```
+php artisan make:controller RestTestController --resource
+```
+
+## Контроллеры приложений
+
+Базовый (родительский) контроллер блога
+
+```
+php artisan make:controller Blog/BaseController
+```
+
+Контроллер статей блога
+
+```
+php artisan make:controller Blog/PostController --resource
+```
+
+Для каждого модуля делаем базовый абстрактный контроллер, от которого будут наследоваться остальные контроллеры модуля.
+
+# Подключение SoftDeletes в модели
+
+```
+use SoftDeletes;
 ```
