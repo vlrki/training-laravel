@@ -75,3 +75,27 @@ php artisan make:controller Blog/PostController --resource
 ```
 use SoftDeletes;
 ```
+
+# Аутентификация
+
+## Создание базовых фвйлов и настроек
+
+```
+composer require laravel/ui
+composer update
+php artisan ui vue --auth
+npm install && npm run dev
+```
+
+## Запуск миграции
+
+```
+php artisan migrate
+```
+
+Тестирование
+
+```
+http://poligon.local/register
+```
+
