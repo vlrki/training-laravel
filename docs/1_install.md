@@ -99,3 +99,20 @@ php artisan migrate
 http://poligon.local/register
 ```
 
+# Контроллер категорий
+
+## Создание маршрутов
+
+web.php
+```
+
+
+```
+
+## Создание контроллера
+
+```
+php artisan make:controller Blog/Admin/CategoryController --resource
+php artisan make:controller Blog/Admin/BaseController 
+```
+
