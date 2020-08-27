@@ -116,3 +116,15 @@ php artisan make:controller Blog/Admin/CategoryController --resource
 php artisan make:controller Blog/Admin/BaseController 
 ```
 
+## Валидация
+
+Храним правила валидации в специальном классе запроса. 
+Создаём свой класс запроса:
+
+```
+php artisan make:request BlogCategoryUpdateRequest
+php artisan make:request BlogCategoryCreateRequest
+```
+
+
+
