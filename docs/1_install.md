@@ -126,5 +126,10 @@ php artisan make:request BlogCategoryUpdateRequest
 php artisan make:request BlogCategoryCreateRequest
 ```
 
+## Репозитории
+
+Репозиторий - обёртка для модели. "Книжный шкаф".
+
+
 
 

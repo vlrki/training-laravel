@@ -6,12 +6,25 @@ use App\Http\Requests\BlogCategoryCreateRequest;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
+use App\Repositories\BlogCategoryRepository;
 use BlogCategoriesTableSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class CategoryController extends BaseController
-{
+{    
+    /**
+     * @var BlogCategoryRepository
+     */
+    private $blogCategoryRepository;
+
+    public function __construct()
+    {
+        // parent::__construct();
+
+        $this->blogCategoryRepository = app(BlogCategoryRepository::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +32,8 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $items = BlogCategory::all();
-        $paginator = BlogCategory::paginate(10);
+        // $items = BlogCategory::all();
+        $paginator = $this->blogCategoryRepository->getAllWithPaginate(10);
 
         // dd(__METHOD__);
         // dd($items, $paginator);
@@ -36,7 +49,7 @@ class CategoryController extends BaseController
     public function create()
     {
         $item = new BlogCategory();
-        $categoryList = BlogCategory::all();
+        $categoryList = $this->blogCategoryRepository->getForSelect();
 
         return view('blog.admin.categories.edit', compact('item', 'categoryList'));
     }
@@ -55,8 +68,7 @@ class CategoryController extends BaseController
             $data['slug'] = Str::slug($data['title']);
         }
 
-        $item = new BlogCategory($data);
-        $item->save();
+        $item = (new BlogCategory())->create($data);
 
         if ($item) {
             return redirect()->route('blog.admin.categories.edit', [$item->id])
@@ -84,10 +96,15 @@ class CategoryController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, BlogCategoryRepository $categoryRepository)
     {
-        $item = BlogCategory::findOrFail($id);
-        $categoryList = BlogCategory::all();
+        $item = $this->blogCategoryRepository->getEdit($id);
+
+        if (empty($item)) {
+            abort(404);
+        }
+
+        $categoryList = $this->blogCategoryRepository->getForSelect();
 
         return view('blog.admin.categories.edit', compact('item', 'categoryList'));
     }
@@ -101,25 +118,6 @@ class CategoryController extends BaseController
      */
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        // $rules = [
-        //     'title' => 'required|min:5|max:200',
-        //     'slug' => 'max:200',
-        //     'description' => 'string|min:3|max:500',
-        //     'parent_id' => 'required|integer|exists:blog_categories,id',
-        // ];
-
-        // $validateData = $this->validate($request, $rules);
-
-        // $validator = \Validator::make($request->all(), $rules);
-        // $validateData[] = $validator->passes();
-        // $validateData[] = $validator->validate();
-        // $validateData[] = $validator->valid();
-        // $validateData[] = $validator->failed();
-        // $validateData[] = $validator->errors();
-        // $validateData[] = $validator->fails();
-
-        // dd($validateData);
-
         $item = BlogCategory::find($id);
 
         if (empty($item)) {
@@ -129,8 +127,12 @@ class CategoryController extends BaseController
         }
 
         $data = $request->all();
-        // dd($request->all(), $request->input());
-        $result = $item->fill($data)->save();
+
+        if (empty($data['slug'])) {
+            $data['slug'] = Str::slug($data['title']);
+        }
+
+        $result = $item->update($data);
 
         if ($result) {
             return redirect()
