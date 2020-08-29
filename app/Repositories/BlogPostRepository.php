@@ -53,6 +53,19 @@ class BlogPostRepository extends CoreRepository
         $result = $this
             ->startConditions()
             ->select($columns)
+            ->orderBy('id')
+            // Lazy load
+            // Это заберёт все поля
+            // ->with(['category', 'user'])
+            // А это только выбранные
+            ->with([
+                // Можно так
+                'category' => function($query) {
+                    $query->select(['id', 'title']);
+                },
+                // или так
+                'user:id,name'
+            ])
             ->paginate($perPage);
 
         return $result;

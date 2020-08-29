@@ -33,8 +33,8 @@
                                     @php /** @var \App\Models\PostCategory $post */ @endphp
                                     <tr @if (!$post->is_published) class="text-muted" @endif>
                                         <td>{{ $post->id }}</td>
-                                        <td>{{ $post->user_id }}</td>
-                                        <td>{{ $post->category_id }}</td>
+                                        <td>{{ $post->user->name }}</td>
+                                        <td>{{ $post->category->title }}</td>
                                         <td>
                                             <a href="{{ route('blog.admin.posts.edit', $post->id) }}" @if (!$post->is_published) class="text-muted" @endif>
                                                 {{ $post->title }}
