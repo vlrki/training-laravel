@@ -113,6 +113,7 @@ web.php
 
 ```
 php artisan make:controller Blog/Admin/CategoryController --resource
+php artisan make:controller Blog/Admin/PostController --resource
 php artisan make:controller Blog/Admin/BaseController 
 ```
 
