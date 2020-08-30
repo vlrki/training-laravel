@@ -132,5 +132,11 @@ php artisan make:request BlogCategoryCreateRequest
 Репозиторий - обёртка для модели. "Книжный шкаф".
 
 
+# Observers
+
+```
+php artisan make:observer BlogPostObserver --model=Models\BlogPost
+php artisan make:observer BlogCategoryObserver --model=Models\BlogCategory
+```
 
 

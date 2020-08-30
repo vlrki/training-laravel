@@ -118,10 +118,6 @@ class PostController extends BaseController
 
         $data = $request->all();
 
-        if (empty($data['slug'])) {
-            $data['slug'] = \Str::slug($data['title']);
-        }
-
         $result = $item->update($data);
 
         if ($result) {
