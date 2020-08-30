@@ -7,7 +7,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <a class="btn btn-primary" href="{{ route('blog.admin.categories.create') }}">Добавить</a>
+                        <a class="btn btn-primary" href="{{ route('blog.admin.posts.create') }}">Добавить</a>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($paginator as $post)
-                                    @php /** @var \App\Models\PostCategory $post */ @endphp
+                                    @php /** @var \App\Models\BlogPost $post */ @endphp
                                     <tr @if (!$post->is_published) class="text-muted" @endif>
                                         <td>{{ $post->id }}</td>
                                         <td>{{ $post->user->name }}</td>

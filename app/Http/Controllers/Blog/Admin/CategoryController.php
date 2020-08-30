@@ -8,8 +8,8 @@ use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Repositories\BlogCategoryRepository;
 use BlogCategoriesTableSeeder;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CategoryController extends BaseController
 {    
@@ -65,7 +65,7 @@ class CategoryController extends BaseController
         $data = $request->input();
 
         if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
+            $data['slug'] = \Str::slug($data['title']);
         }
 
         $item = (new BlogCategory())->create($data);
@@ -129,7 +129,11 @@ class CategoryController extends BaseController
         $data = $request->all();
 
         if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
+            $data['slug'] = \Str::slug($data['title']);
+        }
+        
+        if(empty($item->published_at) && $data['is_published']) {
+            $data['published_at'] = Carbon::now();
         }
 
         $result = $item->update($data);
