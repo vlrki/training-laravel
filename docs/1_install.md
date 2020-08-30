@@ -125,6 +125,9 @@ php artisan make:controller Blog/Admin/BaseController
 ```
 php artisan make:request BlogCategoryUpdateRequest
 php artisan make:request BlogCategoryCreateRequest
+
+php artisan make:request BlogPostUpdateRequest
+php artisan make:request BlogPostCreateRequest
 ```
 
 ## Репозитории

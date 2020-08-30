@@ -16,8 +16,10 @@ class BlogPostObserver
      */
     public function creating(BlogPost $blogPost)
     {
-        $this->setPublished($blogPost);
+        $this->setPublishedAt($blogPost);
         $this->setSlug($blogPost);
+        $this->setHtml($blogPost);
+        $this->setUser($blogPost);
     }
     
     /**
@@ -48,8 +50,10 @@ class BlogPostObserver
 
         // dd($test);
 
-        $this->setPublished($blogPost);
+        $this->setPublishedAt($blogPost);
         $this->setSlug($blogPost);
+        $this->setHtml($blogPost);
+        // $this->setUser($blogPost);
     }
 
     /**
@@ -103,7 +107,7 @@ class BlogPostObserver
      * @param  mixed $blogPost
      * @return void
      */
-    private function setPublished(BlogPost $blogPost)
+    private function setPublishedAt(BlogPost $blogPost)
     {
         if (empty($blogPost->published_at) && $blogPost->is_published) {
             $blogPost->published_at = Carbon::now();
@@ -121,5 +125,33 @@ class BlogPostObserver
         if (empty($blogPost->slug)) {
             $blogPost->slug = \Str::slug($blogPost->title);
         }
+    }
+
+    
+    /**
+     * Переводим markdown в html.
+     *
+     * @param  mixed $blogPost
+     * @return void
+     */
+    private function setHtml(BlogPost $blogPost)
+    {
+        if ($blogPost->isDirty('content_raw')) {
+            // TODO: тут должна быть генерация markdown => html
+            $blogPost->content_html = $blogPost->content_raw;
+        }
+    }
+
+    
+    /**
+     * Устанавливаем id пользователя.
+     *
+     * @param  mixed $blogPost
+     * @return void
+     */
+    private function setUser(BlogPost $blogPost)
+    {
+        // TODO: поставить id авотризованного пользователя
+        $blogPost->user_id = auth()->id ?? BlogPost::UNKNOWN_USER;
     }
 }
