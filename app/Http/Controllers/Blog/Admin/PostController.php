@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogPostCreateRequest;
 use App\Http\Requests\BlogPostUpdateRequest;
 use App\Models\BlogPost;
 use App\Repositories\BlogCategoryRepository;
 use App\Repositories\BlogPostRepository;
-use Illuminate\Http\Request;
 
 class PostController extends BaseController
 {
@@ -151,6 +149,18 @@ class PostController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        // Софт-удаление
+        $result = BlogPost::destroy($id);
+
+        // Полное удаление
+        // $result = BlogPost::find($id)->forceDelete();
+
+        if ($result) {
+            return redirect()
+            ->route('blog.admin.posts.index')
+            ->with(['success' => "Запись [$id] удалена"]);
+        } else {
+            return back()->withErrors(['msg' => 'Ошибка удаления']);
+        }
     }
 }

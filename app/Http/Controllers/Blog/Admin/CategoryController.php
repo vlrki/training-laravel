@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Blog\Admin;
 use App\Http\Requests\BlogCategoryCreateRequest;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Models\BlogCategory;
-use App\Models\BlogPost;
 use App\Repositories\BlogCategoryRepository;
-use BlogCategoriesTableSeeder;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class CategoryController extends BaseController
 {    
@@ -146,6 +142,18 @@ class CategoryController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        // Софт-удаление
+        $result = BlogCategory::destroy($id);
+
+        // Полное удаление
+        // $result = BlogCategory::find($id)->forceDelete();
+
+        if ($result) {
+            return redirect()
+            ->route('blog.admin.categories.index')
+            ->with(['success' => "Запись [$id] удалена"]);
+        } else {
+            return back()->withErrors(['msg' => 'Ошибка удаления']);
+        }
     }
 }
