@@ -142,4 +142,10 @@ php artisan make:observer BlogPostObserver --model=Models\BlogPost
 php artisan make:observer BlogCategoryObserver --model=Models\BlogCategory
 ```
 
+# Mutators & Accessors
+
+```
+public function getTitleAttribute($valueFromObject)
+public function setTitleAttribute($incomingValue)
+```
 
